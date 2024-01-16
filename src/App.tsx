@@ -1,25 +1,19 @@
-import type { Component } from 'solid-js';
+import type { Component } from "solid-js";
 
-import logo from './logo.svg';
-import styles from './App.module.css';
+import styles from "./App.module.css";
+import logo from "./assets/logo.webp";
 
 const App: Component = () => {
   return (
-    <div class={styles.App}>
-      <header class={styles.header}>
-        <img src={logo} class={styles.logo} alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          class={styles.link}
-          href="https://github.com/solidjs/solid"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Solid
-        </a>
-      </header>
+    <div class={styles.container}>
+      <div class={styles.subcontainer}>
+        <div class={styles.tick}></div>
+        <img src={logo} alt="logo" class={styles.logo} />
+        <h1>SOLID CHAT</h1>
+        <h2>Chat with Confidence in the Solid Zone</h2>
+        <button>Try Now</button>
+        <div class={styles.tick}></div>
+      </div>
     </div>
   );
 };

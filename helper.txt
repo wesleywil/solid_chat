@@ -1,0 +1,5 @@
+color pallete
+
+dark => #252430
+light => #f0eff0
+accent => #ce911b
