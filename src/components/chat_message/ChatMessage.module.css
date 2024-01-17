@@ -1,0 +1,29 @@
+.container {
+  width: 20rem;
+  height: fit-content;
+  max-height: 12rem;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  padding: 5px 10px;
+  color: #252430;
+  font-size: 1.1rem;
+  border-radius: 10px;
+}
+
+.sender {
+  margin-left: 30px;
+  align-self: flex-start;
+  background: #f0eff0;
+  box-shadow: -4px 4px 10px 0px #ce921b6b;
+}
+
+
+.receiver {
+  margin-right: 30px;
+  align-self: flex-end;
+  background: #252430;
+  color: #f0eff0;
+  border: 1px solid #ce911b;
+  box-shadow: 4px 5px 10px 0px #d1d1d16b;
+}
+
