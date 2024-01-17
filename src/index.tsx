@@ -4,6 +4,7 @@ import { Router, Route } from "@solidjs/router";
 
 import "./index.css";
 import App from "./App";
+import Chat from "./chat/Chat";
 
 const root = document.getElementById("root");
 
@@ -17,6 +18,7 @@ render(
   () => (
     <Router>
       <Route path="/" component={App} />
+      <Route path="/chat" component={Chat} />
     </Router>
   ),
   root!
