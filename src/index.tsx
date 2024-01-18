@@ -5,6 +5,7 @@ import { Router, Route } from "@solidjs/router";
 import "./index.css";
 import App from "./App";
 import Chat from "./chat/Chat";
+import Navbar from "./components/navbar/Navbar";
 
 const root = document.getElementById("root");
 
@@ -16,10 +17,13 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 
 render(
   () => (
-    <Router>
-      <Route path="/" component={App} />
-      <Route path="/chat" component={Chat} />
-    </Router>
+    <>
+      <Navbar />
+      <Router>
+        <Route path="/" component={App} />
+        <Route path="/chat" component={Chat} />
+      </Router>
+    </>
   ),
   root!
 );
