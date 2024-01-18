@@ -1,0 +1,27 @@
+.container{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    background: #252430;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.contact_name{
+    color: #f0eff0;
+    font-size: 1.3rem;
+    padding: 2px 5px;
+}
+
+.contact_button{
+    font-size: .8rem;
+    font-weight: bold;
+    margin-top: 0;
+    background: #ce911b;
+    border-radius: 0 10px;
+    margin: 5px;
+}
+
+.contact_button:hover{
+    background: #f0eff0;
+}
