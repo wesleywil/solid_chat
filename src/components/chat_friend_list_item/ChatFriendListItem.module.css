@@ -1,19 +1,25 @@
 .container{
     width: 90%;
+    margin: 2px auto;
     display: flex;
     justify-content: space-between;
     background: #252430;
     border-radius: 5px;
     overflow: hidden;
+    z-index: 1;
 }
 
+
+
 .contact_name{
+    align-self: center;
     color: #f0eff0;
     font-size: 1.3rem;
     padding: 2px 5px;
 }
 
 .contact_button{
+    align-items: center;
     font-size: .8rem;
     font-weight: bold;
     margin-top: 0;

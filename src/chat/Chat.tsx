@@ -41,7 +41,11 @@ const Chat: Component = () => {
               class={styles.chat_burger_menu_img}
             />
           </button>
-          <input type="text" class={styles.chat_input} />
+          <textarea
+            rows="1"
+            placeholder="Type here the message"
+            class={styles.chat_input}
+          />
           <button class={styles.chat_button}>Send</button>
         </div>
       </div>

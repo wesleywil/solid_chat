@@ -11,6 +11,17 @@
     overflow: hidden;
 }
 
+.container_image{
+    opacity: 0.4;
+    position: absolute;
+    left: 32%;
+    top: 45%;
+    width: 150px;
+    border-radius: 10px;
+    height: auto;
+    z-index: 0;
+}
+
 .title{
     
     text-align: center;
@@ -32,9 +43,5 @@
 
 .friend_list{
     height: 480px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
     overflow-y: auto;
 }
