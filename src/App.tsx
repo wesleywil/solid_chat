@@ -1,7 +1,10 @@
 import type { Component } from "solid-js";
+import { io, Socket } from "socket.io-client";
 
 import styles from "./App.module.css";
 import logo from "./assets/logo.webp";
+
+const socket: Socket = io("http://localhost:5000");
 
 const App: Component = () => {
   return (
