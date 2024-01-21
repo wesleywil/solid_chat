@@ -25,21 +25,21 @@
   border-radius: 5px;
 }
 
-h1{
+.tick h1{
   margin: 0;
   color: #ce911b;
   margin-bottom: 0.5rem;
 
 }
 
-h2{
+.tick h2{
   font-size: 1.1rem;
   text-align: center;
   margin: 0;
   font-weight: 400;
 }
 
-button{
+.tick button{
   margin-top: 1rem;
   padding: 5px 20px;
   font-size: 1.5rem;
@@ -51,7 +51,7 @@ button{
   transition: 0.3s ease-in-out;
 }
 
-button:hover{
+.tick button:hover{
   background:#ce911b
 }
 
