@@ -18,10 +18,16 @@ const socketIO = new SocketIOServer(server, {
 
 socketIO.on('connection', (socket)=>{
     console.log(`⚡: ${socket.id} user just connected!`);
+    socket.on("message", (data)=>{
+        console.log('message from client => ',data);
+        socketIO.emit('messageResponse', data);
+    })
     socket.on('disconnect', ()=>{
         console.log('🔥: A user disconnected');
     })
 })
+
+
 
 app.get("/api", (req, res)=>{
     res.json({
