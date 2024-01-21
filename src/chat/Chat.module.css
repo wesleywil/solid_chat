@@ -63,12 +63,40 @@
     
 }
 
+.chat_btn_disconnect{
+    margin-right: 2px;
+    padding: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+    color: white;
+    background-color: rgb(255, 130, 98);
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 0;
+    border-radius: 5px;
+    transition: 0.3s ease-in-out;
+}
+
+.chat_btn_disconnect:hover{
+    background-color: white;
+    color: rgb(255, 130, 98);;
+}
+
+.chat_btn_disconnect span{
+    padding: 4px 8px;
+}
+
 .chat_btn_friend_list{
+    padding: 2px 20px;
     width: 10px;
     display: flex;
     justify-content: center;
     margin-top: 0;
     background-color: #ce911b;
+    border: 0;
+    border-radius: 5px;
 }
 
 .chat_btn_friend_list:hover{
@@ -97,8 +125,12 @@
 
 .chat_button {
     margin: 0;
+    padding: 5px 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
     background: #ce911b;
     color: #f0eff0;
+    border: 0;
     border-bottom: 2px solid #ce911b;
     border-radius: 0px 10px 10px 0px;
     transition: 0.5s ease-in;
