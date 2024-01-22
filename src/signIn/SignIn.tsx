@@ -1,7 +1,10 @@
 import { Component, createSignal } from "solid-js";
 import { useNavigate } from "@solidjs/router";
+import { io, Socket } from "socket.io-client";
 
 import styles from "./SignIn.module.css";
+
+const socket: Socket = io("http://localhost:5000");
 
 const SignIn: Component = () => {
   const navigate = useNavigate();
@@ -10,6 +13,8 @@ const SignIn: Component = () => {
   const handleSubmit = (e: Event) => {
     e.preventDefault();
     localStorage.setItem("username", username());
+    // sends the username and socket ID to the Nodejs server
+    socket.emit("newUser", { username: username(), socketID: socket.id });
     navigate("/chat");
   };
   return (
