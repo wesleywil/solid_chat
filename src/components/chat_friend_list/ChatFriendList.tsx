@@ -1,10 +1,23 @@
-import { Component } from "solid-js";
-import ChatFriendListItem from "../chat_friend_list_item/ChatFriendListItem";
+import { Component, createEffect, createSignal, For } from "solid-js";
+import { io, Socket } from "socket.io-client";
 
 import styles from "./ChatFriendList.module.css";
 import logo from "../../assets/logo.webp";
 
+// Components
+import ChatFriendListItem from "../chat_friend_list_item/ChatFriendListItem";
+
+const socket: Socket = io("http://localhost:5000");
+
 const ChatFriendList: Component = () => {
+  const [users, setUsers] = createSignal<{ username: string }[]>([]);
+
+  createEffect(() => {
+    socket.on("newUserResponse", (data) => {
+      setUsers(data);
+      console.log("TEST ====> ", data);
+    });
+  });
   return (
     <div class={styles.container}>
       <img src={logo} alt="logo" class={styles.container_image} />
@@ -15,10 +28,9 @@ const ChatFriendList: Component = () => {
         class={styles.search_input}
       />
       <div class={styles.friend_list}>
-        <ChatFriendListItem />
-        <ChatFriendListItem />
-        <ChatFriendListItem />
-        <ChatFriendListItem />
+        <For each={users()}>
+          {(item) => <ChatFriendListItem name={item.username} />}
+        </For>
       </div>
     </div>
   );
