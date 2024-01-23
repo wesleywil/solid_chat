@@ -1,5 +1,5 @@
 import { Component, createEffect, createSignal, For } from "solid-js";
-import { io, Socket } from "socket.io-client";
+import { Socket } from "socket.io-client";
 
 import styles from "./ChatFriendList.module.css";
 import logo from "../../assets/logo.webp";
@@ -7,17 +7,20 @@ import logo from "../../assets/logo.webp";
 // Components
 import ChatFriendListItem from "../chat_friend_list_item/ChatFriendListItem";
 
-const socket: Socket = io("http://localhost:5000");
-
-const ChatFriendList: Component = () => {
+const ChatFriendList: Component<{ socket: Socket }> = (props) => {
   const [users, setUsers] = createSignal<{ username: string }[]>([]);
 
-  createEffect(() => {
-    socket.on("newUserResponse", (data) => {
-      setUsers(data);
-      console.log("TEST ====> ", data);
-    });
-  });
+  createEffect(
+    () => {
+      props.socket.on("newUserResponse", (data) => {
+        setUsers(data);
+      });
+    },
+    {
+      defer: true,
+      props: { socket: props.socket },
+    }
+  );
   return (
     <div class={styles.container}>
       <img src={logo} alt="logo" class={styles.container_image} />

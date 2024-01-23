@@ -1,5 +1,5 @@
 import { Component, createEffect, createSignal, For } from "solid-js";
-import { io, Socket } from "socket.io-client";
+import { Socket } from "socket.io-client";
 import { hideFriendList } from "../stores/utils";
 
 import styles from "./Chat.module.css";
@@ -10,20 +10,17 @@ import ChatMessage from "../components/chat_message/ChatMessage";
 import ChatFriendList from "../components/chat_friend_list/ChatFriendList";
 import ChatFooter from "../components/chat_footer/ChatFooter";
 
-const socket: Socket = io("http://localhost:5000");
-
-const Chat: Component = () => {
+const Chat: Component<{ socket: Socket }> = (props) => {
   const [messages, setMessages] = createSignal<
     { text: string; name: string; id: string }[]
   >([]);
 
   createEffect(() => {
-    socket.on("messageResponse", (data) => {
-      console.log(data);
-      setMessages((prev) => [...prev, data]);
-      console.log("array message ===> ", JSON.stringify(messages()));
+    props.socket.on("messageResponse", (data) => {
+      setMessages((prev) => [data, ...prev]);
     });
   });
+
   return (
     <div class={styles.container}>
       <img src={logo} alt="logo" class={styles.container_image} />
@@ -39,9 +36,9 @@ const Chat: Component = () => {
             }
           </For>
         </div>
-        <ChatFooter socket={socket} />
+        <ChatFooter socket={props.socket} />
       </div>
-      {hideFriendList() ? "" : <ChatFriendList />}
+      {hideFriendList() ? "" : <ChatFriendList socket={props.socket} />}
     </div>
   );
 };

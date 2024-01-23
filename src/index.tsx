@@ -9,8 +9,10 @@ import SignIn from "./signIn/SignIn";
 
 // Components
 import Navbar from "./components/navbar/Navbar";
+import { io, Socket } from "socket.io-client";
 
 const root = document.getElementById("root");
+const socket: Socket = io("http://localhost:5000");
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   throw new Error(
@@ -24,8 +26,8 @@ render(
       <Navbar />
       <Router>
         <Route path="/" component={App} />
-        <Route path="/chat" component={Chat} />
-        <Route path="/signIn" component={SignIn} />
+        <Route path="/chat" component={() => <Chat socket={socket} />} />
+        <Route path="/signIn" component={() => <SignIn socket={socket} />} />
       </Router>
     </>
   ),
