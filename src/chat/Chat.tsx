@@ -1,5 +1,6 @@
 import { Component, createEffect, createSignal, For } from "solid-js";
 import { io, Socket } from "socket.io-client";
+import { hideFriendList } from "../stores/utils";
 
 import styles from "./Chat.module.css";
 import logo from "../assets/logo.webp";
@@ -12,14 +13,12 @@ import ChatFooter from "../components/chat_footer/ChatFooter";
 const socket: Socket = io("http://localhost:5000");
 
 const Chat: Component = () => {
-  const [hideList, setHideList] = createSignal(true);
   const [messages, setMessages] = createSignal<
     { text: string; name: string; id: string }[]
   >([]);
 
   createEffect(() => {
     socket.on("messageResponse", (data) => {
-      // setMessages([...prevMessages, data])
       console.log(data);
       setMessages((prev) => [...prev, data]);
       console.log("array message ===> ", JSON.stringify(messages()));
@@ -42,7 +41,7 @@ const Chat: Component = () => {
         </div>
         <ChatFooter socket={socket} />
       </div>
-      {hideList() ? "" : <ChatFriendList />}
+      {hideFriendList() ? "" : <ChatFriendList />}
     </div>
   );
 };

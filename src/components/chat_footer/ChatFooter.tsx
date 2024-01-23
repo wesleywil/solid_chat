@@ -4,6 +4,7 @@ import styles from "./ChatFooter.module.css";
 import burger_menu from "../../assets/burger_menu.svg";
 import { useNavigate } from "@solidjs/router";
 import { Socket } from "socket.io-client";
+import { hideFriendList, setHideFriendList } from "../../stores/utils";
 
 const ChatFooter: Component<{ socket: Socket }> = (props) => {
   const navigate = useNavigate();
@@ -67,6 +68,7 @@ const ChatFooter: Component<{ socket: Socket }> = (props) => {
         <button
           type="button"
           // onClick={() => setHideList(!hideList())}
+          onClick={() => setHideFriendList(!hideFriendList())}
           class={styles.chat_btn_friend_list}
         >
           <img
