@@ -29,6 +29,7 @@
     flex-direction: column;
     justify-content: flex-end;
     position: relative;
+    
 }
 
 .messages{
@@ -43,6 +44,7 @@
     overflow-y: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    
 }
 
 .messages::-webkit-scrollbar{

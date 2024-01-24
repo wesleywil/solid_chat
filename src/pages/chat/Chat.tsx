@@ -1,14 +1,14 @@
 import { Component, createEffect, createSignal, For } from "solid-js";
 import { Socket } from "socket.io-client";
-import { hideFriendList } from "../stores/utils";
+import { hideFriendList } from "../../stores/utils";
 
 import styles from "./Chat.module.css";
-import logo from "../assets/logo.webp";
+import logo from "../../assets/logo.webp";
 
 // Components
-import ChatMessage from "../components/chat_message/ChatMessage";
-import ChatFriendList from "../components/chat_friend_list/ChatFriendList";
-import ChatFooter from "../components/chat_footer/ChatFooter";
+import ChatMessage from "../../components/chat_message/ChatMessage";
+import ChatFriendList from "../../components/chat_friend_list/ChatFriendList";
+import ChatFooter from "../../components/chat_footer/ChatFooter";
 
 const Chat: Component<{ socket: Socket }> = (props) => {
   const [messages, setMessages] = createSignal<

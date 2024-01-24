@@ -1,11 +1,9 @@
 import { Component, createSignal } from "solid-js";
-import { useNavigate } from "@solidjs/router";
 import { Socket } from "socket.io-client";
 
 import styles from "./SignIn.module.css";
 
 const SignIn: Component<{ socket: Socket }> = (props) => {
-  const navigate = useNavigate();
   const [username, setUsername] = createSignal("");
 
   const handleSubmit = (e: Event) => {
@@ -16,7 +14,7 @@ const SignIn: Component<{ socket: Socket }> = (props) => {
       username: username(),
       socketID: props.socket.id,
     });
-    navigate("/chat");
+    window.location.href = "/chat";
   };
   return (
     <div class={styles.container}>

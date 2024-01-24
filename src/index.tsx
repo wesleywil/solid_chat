@@ -1,15 +1,15 @@
 /* @refresh reload */
 import { render } from "solid-js/web";
 import { Router, Route } from "@solidjs/router";
+import { io, Socket } from "socket.io-client";
 
 import "./index.css";
 import App from "./App";
-import Chat from "./chat/Chat";
-import SignIn from "./signIn/SignIn";
+import Chat from "./pages/chat/Chat";
+import SignIn from "./pages/signIn/SignIn";
 
 // Components
 import Navbar from "./components/navbar/Navbar";
-import { io, Socket } from "socket.io-client";
 
 const root = document.getElementById("root");
 const socket: Socket = io("http://localhost:5000");
@@ -23,7 +23,7 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 render(
   () => (
     <>
-      <Navbar />
+      <Navbar socket={socket} />
       <Router>
         <Route path="/" component={App} />
         <Route path="/chat" component={() => <Chat socket={socket} />} />
