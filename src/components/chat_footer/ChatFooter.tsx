@@ -1,10 +1,10 @@
-import { Component, createEffect, createSignal } from "solid-js";
-
-import styles from "./ChatFooter.module.css";
-import burger_menu from "../../assets/burger_menu.svg";
+import { Component, createEffect, createSignal, onCleanup } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 import { Socket } from "socket.io-client";
 import { hideFriendList, setHideFriendList } from "../../stores/utils";
+
+import styles from "./ChatFooter.module.css";
+import burger_menu from "../../assets/burger_menu.svg";
 
 const ChatFooter: Component<{ socket: Socket }> = (props) => {
   const navigate = useNavigate();
@@ -17,13 +17,31 @@ const ChatFooter: Component<{ socket: Socket }> = (props) => {
     window.location.reload();
   };
 
+  let typingTimeout: number;
+
   const handleTyping = () => {
     console.log("Typing");
+
+    clearTimeout(typingTimeout);
+
     props.socket.emit(
       "typing",
       `${localStorage.getItem("username")} is typing...`
     );
+
+    //Set a new timeout to clear the typing message after a certain delay
+    typingTimeout = setTimeout(() => {
+      props.socket.emit("typing", "");
+    }, 1000);
   };
+
+  const handleKeyDown = () => {
+    handleTyping();
+  };
+
+  onCleanup(() => {
+    clearTimeout(typingTimeout);
+  });
 
   const handleSendMessage = (e: Event) => {
     e.preventDefault();
@@ -84,7 +102,7 @@ const ChatFooter: Component<{ socket: Socket }> = (props) => {
           class={styles.chat_input}
           value={message()}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleTyping}
+          onKeyDown={handleKeyDown}
         />
         <button type="submit" class={styles.chat_button}>
           Send

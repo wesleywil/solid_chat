@@ -1,9 +1,14 @@
-.typing{
-    width: 90%;
+.typing {
+    width: 79vw;
+    height: 20px;
     margin: auto;
-    margin-left: 8rem;
     font-size: 1rem;
-   
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1919px) {
+    .typing {
+        width: 72vw;
+    }
 }
 
 .chat {
