@@ -4,3 +4,6 @@ dist
 
 # helper text
 .helper.txt
+
+# Database
+backend/database.sqlite
