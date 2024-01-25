@@ -1,5 +1,6 @@
-import { Component } from "solid-js";
+import { Component, createEffect } from "solid-js";
 import { Socket } from "socket.io-client";
+import { showDisconnect, setShowDisconnect } from "../../stores/utils";
 
 import styles from "./Navbar.module.css";
 import logo from "../../assets/logo.webp";
@@ -7,8 +8,15 @@ import logo from "../../assets/logo.webp";
 const Navbar: Component<{ socket: Socket }> = (props) => {
   const handleDisconnect = () => {
     localStorage.removeItem("username");
-    window.location.reload();
+    setShowDisconnect(false);
   };
+
+  createEffect(() => {
+    //Upade logic here when "username" is removed from local storage
+    if (localStorage.getItem("username")) {
+      setShowDisconnect(true);
+    }
+  });
   return (
     <header class={styles.container}>
       <div class={styles.subcontainer}>
@@ -19,7 +27,7 @@ const Navbar: Component<{ socket: Socket }> = (props) => {
           <a href="/chat" class={styles.navbar_link}>
             Chat
           </a>
-          {localStorage.getItem("username")?.length ? (
+          {showDisconnect() ? (
             <button
               onClick={handleDisconnect}
               class={styles.navbar_btn_disconnect}
