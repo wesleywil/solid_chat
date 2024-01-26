@@ -1,6 +1,6 @@
 import { Component, createEffect, createSignal, For } from "solid-js";
 import { Socket } from "socket.io-client";
-import { hideFriendList } from "../../stores/utils";
+import useRedux from "../../redux/store";
 
 import styles from "./Chat.module.css";
 import logo from "../../assets/logo.webp";
@@ -11,6 +11,7 @@ import ChatFriendList from "../../components/chat_friend_list/ChatFriendList";
 import ChatFooter from "../../components/chat_footer/ChatFooter";
 
 const Chat: Component<{ socket: Socket }> = (props) => {
+  const [state] = useRedux();
   const [messages, setMessages] = createSignal<
     { text: string; name: string; id: string }[]
   >([]);
@@ -38,7 +39,7 @@ const Chat: Component<{ socket: Socket }> = (props) => {
         </div>
         <ChatFooter socket={props.socket} />
       </div>
-      {hideFriendList() ? "" : <ChatFriendList socket={props.socket} />}
+      {state.hideFriendList ? "" : <ChatFriendList socket={props.socket} />}
     </div>
   );
 };

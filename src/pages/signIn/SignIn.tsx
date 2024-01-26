@@ -1,12 +1,13 @@
 import { Component, createSignal } from "solid-js";
 import { Socket } from "socket.io-client";
 import { useNavigate } from "@solidjs/router";
-import { setShowDisconnect } from "../../stores/utils";
+import useRedux from "../../redux/store";
 
 import styles from "./SignIn.module.css";
 
 const SignIn: Component<{ socket: Socket }> = (props) => {
   const navigate = useNavigate();
+  const [state, actions] = useRedux();
   const [username, setUsername] = createSignal("");
 
   const handleSubmit = (e: Event) => {
@@ -16,7 +17,7 @@ const SignIn: Component<{ socket: Socket }> = (props) => {
     props.socket.emit("newUser", {
       username: username(),
     });
-    setShowDisconnect(true);
+    actions.setShowDisconnect(true);
     navigate("/chat");
   };
   return (

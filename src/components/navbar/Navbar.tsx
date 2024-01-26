@@ -1,20 +1,21 @@
 import { Component, createEffect } from "solid-js";
 import { Socket } from "socket.io-client";
-import { showDisconnect, setShowDisconnect } from "../../stores/utils";
+import useRedux, { setShowDisconnect } from "../../redux/store";
 
 import styles from "./Navbar.module.css";
 import logo from "../../assets/logo.webp";
 
 const Navbar: Component<{ socket: Socket }> = (props) => {
+  const [state, actions] = useRedux();
   const handleDisconnect = () => {
     localStorage.removeItem("username");
-    setShowDisconnect(false);
+    actions.setShowDisconnect(false);
   };
 
   createEffect(() => {
     //Upade logic here when "username" is removed from local storage
     if (localStorage.getItem("username")) {
-      setShowDisconnect(true);
+      actions.setShowDisconnect(true);
     }
   });
   return (
@@ -27,7 +28,7 @@ const Navbar: Component<{ socket: Socket }> = (props) => {
           <a href="/chat" class={styles.navbar_link}>
             Chat
           </a>
-          {showDisconnect() ? (
+          {state.showDisconnect ? (
             <button
               onClick={handleDisconnect}
               class={styles.navbar_btn_disconnect}
