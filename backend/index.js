@@ -42,9 +42,8 @@ socketIO.on("connection", (socket) => {
       socketIO.emit("newUserResponse", users);
     });
   });
-  // Disconnect User
-  socket.on("disconnect", () => {
-    console.log("🔥: A user disconnected");
+
+  socket.on("deleteUser", ()=>{
     deleteUser(socket.id, (err) => {
       if (err) {
         console.error("Error delete user: ", err.message);
@@ -59,6 +58,12 @@ socketIO.on("connection", (socket) => {
         socket.emit("newUserResponse", users);
       });
     });
+  })
+
+  // Disconnect User
+  socket.on("disconnect", () => {
+    console.log("🔥: A user disconnected");
+    socket.disconnect();
   });
 });
 
