@@ -1,12 +1,13 @@
 import { Component, createEffect } from "solid-js";
 import { Socket } from "socket.io-client";
-import useRedux, { setShowDisconnect } from "../../redux/store";
+import useRedux from "../../redux/useRedux";
 
 import styles from "./Navbar.module.css";
 import logo from "../../assets/logo.webp";
+import { setShowDisconnect, utilStore } from "../../redux/utils/utils";
 
 const Navbar: Component<{ socket: Socket }> = (props) => {
-  const [state, actions] = useRedux();
+  const [state, actions] = useRedux(utilStore, { setShowDisconnect });
   const handleDisconnect = () => {
     localStorage.removeItem("username");
     actions.setShowDisconnect(false);

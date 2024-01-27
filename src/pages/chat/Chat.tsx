@@ -1,6 +1,6 @@
 import { Component, createEffect, createSignal, For } from "solid-js";
 import { Socket } from "socket.io-client";
-import useRedux from "../../redux/store";
+import useRedux from "../../redux/useRedux";
 
 import styles from "./Chat.module.css";
 import logo from "../../assets/logo.webp";
@@ -9,9 +9,10 @@ import logo from "../../assets/logo.webp";
 import ChatMessage from "../../components/chat_message/ChatMessage";
 import ChatFriendList from "../../components/chat_friend_list/ChatFriendList";
 import ChatFooter from "../../components/chat_footer/ChatFooter";
+import { utilStore } from "../../redux/utils/utils";
 
 const Chat: Component<{ socket: Socket }> = (props) => {
-  const [state] = useRedux();
+  const [state] = useRedux(utilStore, []);
   const [messages, setMessages] = createSignal<
     { text: string; name: string; id: string }[]
   >([]);

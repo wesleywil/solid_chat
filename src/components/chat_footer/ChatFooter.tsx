@@ -1,14 +1,15 @@
 import { Component, createEffect, createSignal, onCleanup } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 import { Socket } from "socket.io-client";
-import useRedux from "../../redux/store";
+import useRedux from "../../redux/useRedux";
 
 import styles from "./ChatFooter.module.css";
 import burger_menu from "../../assets/burger_menu.svg";
+import { setHideFriendList, utilStore } from "../../redux/utils/utils";
 
 const ChatFooter: Component<{ socket: Socket }> = (props) => {
   const navigate = useNavigate();
-  const [state, actions] = useRedux();
+  const [state, actions] = useRedux(utilStore, { setHideFriendList });
   const [message, setMessage] = createSignal("");
   const [typingStatus, setTypingStatus] = createSignal("");
 
