@@ -43,7 +43,7 @@ socketIO.on("connection", (socket) => {
     });
   });
 
-  socket.on("deleteUser", ()=>{
+  socket.on("deleteUser", () => {
     deleteUser(socket.id, (err) => {
       if (err) {
         console.error("Error delete user: ", err.message);
@@ -58,7 +58,7 @@ socketIO.on("connection", (socket) => {
         socket.emit("newUserResponse", users);
       });
     });
-  })
+  });
 
   // Disconnect User
   socket.on("disconnect", () => {
@@ -67,10 +67,17 @@ socketIO.on("connection", (socket) => {
   });
 });
 
-
-app.get("/api", (req, res) => {
-  res.json({
-    message: "Hello world!",
+app.get("/api/users", (req, res) => {
+  getAllUsers((err, rows) => {
+    if (err) {
+      res.json({
+        error: err.message,
+      });
+    }
+    const users = rows;
+    res.json({
+      users: users,
+    });
   });
 });
 
