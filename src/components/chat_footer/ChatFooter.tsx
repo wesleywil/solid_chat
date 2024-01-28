@@ -1,15 +1,17 @@
 import { Component, createEffect, createSignal, onCleanup } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 import { Socket } from "socket.io-client";
+import { setHideFriendList, utilStore } from "../../redux/utils/utils";
+import { chatStore } from "../../redux/chat/chat";
 import useRedux from "../../redux/useRedux";
 
 import styles from "./ChatFooter.module.css";
 import burger_menu from "../../assets/burger_menu.svg";
-import { setHideFriendList, utilStore } from "../../redux/utils/utils";
 
 const ChatFooter: Component<{ socket: Socket }> = (props) => {
   const navigate = useNavigate();
   const [state, actions] = useRedux(utilStore, { setHideFriendList });
+  const [chatState, chatActions] = useRedux(chatStore, {});
   const [message, setMessage] = createSignal("");
   const [typingStatus, setTypingStatus] = createSignal("");
 
@@ -48,11 +50,12 @@ const ChatFooter: Component<{ socket: Socket }> = (props) => {
   const handleSendMessage = (e: Event) => {
     e.preventDefault();
     if (message().trim() && localStorage.getItem("username")) {
-      props.socket.emit("message", {
+      props.socket.emit("private_message", {
         text: message(),
         name: localStorage.getItem("username"),
         id: `${props.socket.id}${Math.random()}`,
         socketID: props.socket.id,
+        toId: chatState.user.socketID,
       });
     }
     setMessage("");
@@ -87,7 +90,6 @@ const ChatFooter: Component<{ socket: Socket }> = (props) => {
         </button>
         <button
           type="button"
-          // onClick={() => setHideList(!hideList())}
           onClick={() => actions.setHideFriendList()}
           class={styles.chat_btn_friend_list}
         >
