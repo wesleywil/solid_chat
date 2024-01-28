@@ -6,10 +6,11 @@ import logo from "../../assets/logo.webp";
 
 // Components
 import ChatFriendListItem from "../chat_friend_list_item/ChatFriendListItem";
+import { User } from "../../utils/interfaces";
 
 const ChatFriendList: Component<{ socket: Socket }> = (props) => {
-  const [allUsers, setAllUsers] = createSignal<{ username: string }[]>([]);
-  const [users, setUsers] = createSignal<{ username: string }[]>([]);
+  const [allUsers, setAllUsers] = createSignal<User[]>([]);
+  const [users, setUsers] = createSignal<User[]>([]);
   const [filter, setFilter] = createSignal("");
 
   createEffect(async () => {
@@ -38,9 +39,7 @@ const ChatFriendList: Component<{ socket: Socket }> = (props) => {
         onInput={(e) => handleFilter(e)}
       />
       <div class={styles.friend_list}>
-        <For each={users()}>
-          {(item) => <ChatFriendListItem name={item.username} />}
-        </For>
+        <For each={users()}>{(item) => <ChatFriendListItem user={item} />}</For>
       </div>
     </div>
   );

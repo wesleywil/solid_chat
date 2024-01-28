@@ -23,11 +23,24 @@
     font-size: .8rem;
     font-weight: bold;
     margin-top: 0;
-    background: #ce911b;
     border-radius: 0 10px;
     margin: 5px;
+    border: 0;
 }
 
-.contact_button:hover{
+.toChat{
+    background: #ce911b;
+}
+
+.toChat:hover{
     background: #f0eff0;
 }
+
+.chatting{
+    background: #f0eff0;
+}
+
+.chatting:hover{
+    background: #ce911b;
+}
+
