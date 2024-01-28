@@ -27,6 +27,16 @@ socketIO.on("connection", (socket) => {
     console.log("message from client => ", data);
     socketIO.emit("messageResponse", data);
   });
+
+  socket.on("private_message", (data)=>{
+    console.log("private_message => ", data);
+    socket.to(data.toId).emit("messageResponse", {
+      text:data.text,
+      name:data.name,
+      id:data.id,
+      socketID:data.socketID
+    })
+  })
   // Nofify when a user is typing
   socket.on("typing", (data) => {
     socket.broadcast.emit("typingResponse", data);
