@@ -3,3 +3,5 @@ color pallete
 dark => #252430
 light => #f0eff0
 accent => #ce911b
+
+change the signUp/signIn function in the backend to generate a room with a the username and random number, another thing to put is a return of an error if the username already exists, this error message will be send to the frontend when a user tries to create an account, with the room we can send message for the room specific that will act like the username 

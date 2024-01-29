@@ -3,7 +3,7 @@ dist
 
 
 # helper text
-.helper.txt
+helper.txt
 
 # Database
 backend/database.sqlite
