@@ -1,4 +1,24 @@
+/* .container{
+    position: absolute;
+    top: 200px;
+    left: 200px;
+    width: 400px;
+    height:600px;
+    background-color: #f0eff0;
+    border: 1px solid #f0eff0;
+    border-radius: 5px;
+    box-shadow: -3px 4px #ce911b;
+    overflow: hidden;
+} */
+
 .container{
+    position: absolute;
+    top: 0;
+    width: 99vw;
+    height: 93vh;
+}
+
+.sub_container{
     position: absolute;
     top: 200px;
     left: 200px;
