@@ -1,6 +1,7 @@
 import { Component, createEffect, createSignal, For } from "solid-js";
 import { Socket } from "socket.io-client";
 import useRedux from "../../redux/useRedux";
+import { utilStore } from "../../redux/utils/utils";
 
 import styles from "./Chat.module.css";
 import logo from "../../assets/logo.webp";
@@ -9,7 +10,6 @@ import logo from "../../assets/logo.webp";
 import ChatMessage from "../../components/chat_message/ChatMessage";
 import ChatFriendList from "../../components/chat_friend_list/ChatFriendList";
 import ChatFooter from "../../components/chat_footer/ChatFooter";
-import { utilStore } from "../../redux/utils/utils";
 
 const Chat: Component<{ socket: Socket }> = (props) => {
   const [state] = useRedux(utilStore, []);
@@ -25,22 +25,26 @@ const Chat: Component<{ socket: Socket }> = (props) => {
 
   return (
     <div class={styles.container}>
-      <img src={logo} alt="logo" class={styles.container_image} />
-      <div class={styles.content}>
-        <div class={styles.messages}>
-          <For each={messages()}>
-            {(item) =>
-              item.name === localStorage.getItem("username") ? (
-                <ChatMessage sender={false} message={item.text} />
-              ) : (
-                <ChatMessage sender={true} message={item.text} />
-              )
-            }
-          </For>
+      {/* Friend List */}
+      <ChatFriendList socket={props.socket} />
+      {/* Content */}
+      <div class={styles.sub_container}>
+        <img src={logo} alt="logo" class={styles.sub_container_image} />
+        <div class={styles.content}>
+          <div class={styles.messages}>
+            <For each={messages()}>
+              {(item) =>
+                item.name === localStorage.getItem("username") ? (
+                  <ChatMessage sender={false} message={item.text} />
+                ) : (
+                  <ChatMessage sender={true} message={item.text} />
+                )
+              }
+            </For>
+          </div>
+          <ChatFooter socket={props.socket} />
         </div>
-        <ChatFooter socket={props.socket} />
       </div>
-      {state.hideFriendList ? "" : <ChatFriendList socket={props.socket} />}
     </div>
   );
 };

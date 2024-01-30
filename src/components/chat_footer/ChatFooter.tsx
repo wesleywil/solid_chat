@@ -78,7 +78,7 @@ const ChatFooter: Component<{ socket: Socket }> = (props) => {
   );
 
   return (
-    <>
+    <div class={styles.container}>
       <h1 class={styles.typing}>{typingStatus()}</h1>
       <form onSubmit={handleSendMessage} class={styles.chat}>
         <button
@@ -112,7 +112,7 @@ const ChatFooter: Component<{ socket: Socket }> = (props) => {
           Send
         </button>
       </form>
-    </>
+    </div>
   );
 };
 

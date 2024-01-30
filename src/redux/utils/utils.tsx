@@ -3,7 +3,7 @@ import { configureStore, createSlice } from "@reduxjs/toolkit";
 export const utilSlice = createSlice({
   name: "utils",
   initialState: {
-    hideFriendList: true,
+    hideFriendList: false,
     showDisconnect: false,
   },
   reducers: {
