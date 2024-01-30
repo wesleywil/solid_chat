@@ -73,6 +73,20 @@ socketIO.on("connection", (socket) => {
   // Disconnect User
   socket.on("disconnect", () => {
     console.log("🔥: A user disconnected");
+    deleteUser(socket.id, (err) => {
+      if (err) {
+        console.error("Error delete user: ", err.message);
+        return;
+      }
+      getAllUsers((err, rows) => {
+        if (err) {
+          console.error("Error fetching users: ", err.message);
+          return;
+        }
+        users = rows;
+        socket.emit("newUserResponse", users);
+      });
+    });
     socket.disconnect();
   });
 });
