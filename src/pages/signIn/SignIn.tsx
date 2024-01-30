@@ -1,24 +1,22 @@
 import { Component, createSignal } from "solid-js";
 import { Socket } from "socket.io-client";
 import { useNavigate } from "@solidjs/router";
-import useRedux from "../../redux/useRedux";
 
 import styles from "./SignIn.module.css";
-import { setShowDisconnect, utilStore } from "../../redux/utils/utils";
 
 const SignIn: Component<{ socket: Socket }> = (props) => {
   const navigate = useNavigate();
-  const [state, actions] = useRedux(utilStore, { setShowDisconnect });
   const [username, setUsername] = createSignal("");
 
   const handleSubmit = (e: Event) => {
     e.preventDefault();
+    // First delete the actual logged In user
+    props.socket.emit("deleteUser");
     localStorage.setItem("username", username());
-    // sends the username and socket ID to the Nodejs server
+    // sends the username to the Nodejs server
     props.socket.emit("newUser", {
       username: username(),
     });
-    actions.setShowDisconnect(true);
     navigate("/chat");
   };
   return (
