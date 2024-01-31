@@ -1,12 +1,15 @@
 import { Component, createSignal } from "solid-js";
 import { Socket } from "socket.io-client";
 import { useNavigate } from "@solidjs/router";
+import useRedux from "../../redux/useRedux";
+import { setOnlineUsers, userStore } from "../../redux/users/users";
 
 import styles from "./SignIn.module.css";
 
 const SignIn: Component<{ socket: Socket }> = (props) => {
   const navigate = useNavigate();
   const [username, setUsername] = createSignal("");
+  const [states, action] = useRedux(userStore, { setOnlineUsers });
 
   const handleSubmit = (e: Event) => {
     e.preventDefault();
@@ -16,6 +19,10 @@ const SignIn: Component<{ socket: Socket }> = (props) => {
     // sends the username to the Nodejs server
     props.socket.emit("newUser", {
       username: username(),
+    });
+
+    props.socket.on("newUserResponse", (data) => {
+      action.setOnlineUsers(data);
     });
     navigate("/chat");
   };

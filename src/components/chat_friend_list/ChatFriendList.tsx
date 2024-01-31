@@ -1,15 +1,8 @@
-import {
-  Component,
-  createEffect,
-  createSignal,
-  For,
-  JSX,
-  onCleanup,
-} from "solid-js";
+import { Component, createEffect, createSignal, For, JSX } from "solid-js";
 import { Socket } from "socket.io-client";
-import { User } from "../../utils/interfaces";
 import useRedux from "../../redux/useRedux";
 import { setHideFriendList, utilStore } from "../../redux/utils/utils";
+import { filterOnlineUsers, userStore } from "../../redux/users/users";
 
 import styles from "./ChatFriendList.module.css";
 
@@ -18,17 +11,8 @@ import ChatFriendListItem from "../chat_friend_list_item/ChatFriendListItem";
 
 const ChatFriendList: Component<{ socket: Socket }> = (props) => {
   const [state, actions] = useRedux(utilStore, { setHideFriendList });
-  const [allUsers, setAllUsers] = createSignal<User[]>([]);
-  const [users, setUsers] = createSignal<User[]>([]);
-  const [filter, setFilter] = createSignal("");
+  const [userState, userActions] = useRedux(userStore, { filterOnlineUsers });
   const [containerClass, setContainerClass] = createSignal(styles.container);
-
-  createEffect(async () => {
-    const response = await fetch("http://localhost:5000/api/users/");
-    const data = await response.json();
-    setAllUsers(data.users);
-    setUsers(data.users);
-  });
 
   createEffect(() => {
     // set Hide Friend List
@@ -40,10 +24,8 @@ const ChatFriendList: Component<{ socket: Socket }> = (props) => {
   });
 
   const handleFilter: JSX.EventHandler<HTMLInputElement, InputEvent> = (e) => {
-    const filteredUsers = allUsers().filter((item) =>
-      item.username.toLowerCase().includes(e.currentTarget.value)
-    );
-    setUsers(filteredUsers);
+    console.log("FILTER ==> ", e.currentTarget.value);
+    userActions.filterOnlineUsers(e.currentTarget.value);
   };
   return (
     <div class={containerClass()}>
@@ -52,11 +34,12 @@ const ChatFriendList: Component<{ socket: Socket }> = (props) => {
         type="text"
         class={styles.search_input}
         placeholder="Search Contacts"
-        value={filter()}
         onInput={(e) => handleFilter(e)}
       />
       <div class={styles.friend_list}>
-        <For each={users()}>{(item) => <ChatFriendListItem user={item} />}</For>
+        <For each={userState.onlineUsers}>
+          {(item) => <ChatFriendListItem user={item} />}
+        </For>
       </div>
     </div>
   );
