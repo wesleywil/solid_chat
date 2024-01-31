@@ -14,10 +14,11 @@ import ChatFooter from "../../components/chat_footer/ChatFooter";
 const Chat: Component<{ socket: Socket }> = (props) => {
   const [state] = useRedux(utilStore, []);
   const [messages, setMessages] = createSignal<
-    { text: string; name: string; id: string }[]
+    { text: string; name: string; id: string; socketID: string }[]
   >([]);
 
   createEffect(() => {
+    console.log("SOCKET ID ==> ", props.socket.id);
     props.socket.on("messageResponse", (data) => {
       setMessages((prev) => [data, ...prev]);
     });
@@ -34,10 +35,18 @@ const Chat: Component<{ socket: Socket }> = (props) => {
           <div class={styles.messages}>
             <For each={messages()}>
               {(item) =>
-                item.name === localStorage.getItem("username") ? (
-                  <ChatMessage sender={false} message={item.text} />
+                item.socketID === props.socket.id ? (
+                  <ChatMessage
+                    sender={false}
+                    username={item.name}
+                    message={item.text}
+                  />
                 ) : (
-                  <ChatMessage sender={true} message={item.text} />
+                  <ChatMessage
+                    sender={true}
+                    username={item.name}
+                    message={item.text}
+                  />
                 )
               }
             </For>
