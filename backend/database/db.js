@@ -5,7 +5,7 @@ const db = new sqlite3.default.Database("database.sqlite");
 
 // Create a table for users
 db.run(
-  "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, socketID TEXT NOT NULL)"
+  "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, socketID TEXT NOT NULL)"
 );
 
 export const getAllUsers = (callback) => {

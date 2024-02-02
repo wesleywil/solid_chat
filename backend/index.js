@@ -28,15 +28,15 @@ socketIO.on("connection", (socket) => {
     socketIO.emit("messageResponse", data);
   });
 
-  socket.on("private_message", (data)=>{
+  socket.on("private_message", (data) => {
     console.log("private_message => ", data);
     socket.to(data.toId).emit("messageResponse", {
-      text:data.text,
-      name:data.name,
-      id:data.id,
-      socketID:data.socketID
-    })
-  })
+      text: data.text,
+      name: data.name,
+      id: data.id,
+      socketID: data.socketID,
+    });
+  });
   // Nofify when a user is typing
   socket.on("typing", (data) => {
     socket.broadcast.emit("typingResponse", data);
@@ -45,11 +45,24 @@ socketIO.on("connection", (socket) => {
   socket.on("newUser", (data) => {
     createUser(data.username, socket.id, (err, userId) => {
       if (err) {
-        console.error("Error creating user: ", err.message);
-        return;
+        if (
+          err.message ===
+          "SQLITE_CONSTRAINT: UNIQUE constraint failed: users.username"
+        ) {
+          console.log("username is already taken");
+          socket.emit("newUserError", "username is already taken");
+        } else {
+          console.error("Error creating user: ", err.message);
+          return;
+        }
+      } else {
+        users.push({
+          id: userId,
+          username: data.username,
+          socketID: socket.id,
+        });
+        socketIO.emit("newUserResponse", users);
       }
-      users.push({ id: userId, username: data.username, socketID: socket.id });
-      socketIO.emit("newUserResponse", users);
     });
   });
 
@@ -65,7 +78,7 @@ socketIO.on("connection", (socket) => {
           return;
         }
         users = rows;
-        socket.emit("newUserResponse", users);
+        socket.emit("userDeleteResponse", users);
       });
     });
   });
