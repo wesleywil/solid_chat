@@ -30,7 +30,15 @@ socketIO.on("connection", (socket) => {
 
   socket.on("private_message", (data) => {
     console.log("private_message => ", data);
+    // Emit to the recipient
     socket.to(data.toId).emit("messageResponse", {
+      text: data.text,
+      name: data.name,
+      id: data.id,
+      socketID: data.socketID,
+    });
+    // Emit to the sender
+    socket.emit("messageResponse", {
       text: data.text,
       name: data.name,
       id: data.id,
@@ -39,7 +47,7 @@ socketIO.on("connection", (socket) => {
   });
   // Nofify when a user is typing
   socket.on("typing", (data) => {
-    socket.broadcast.emit("typingResponse", data);
+    socket.broadcast.to(data.toId).emit("typingResponse", data);
   });
   // Listens when a new user joins the server
   socket.on("newUser", (data) => {

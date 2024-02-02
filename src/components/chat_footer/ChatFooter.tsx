@@ -24,23 +24,20 @@ const ChatFooter: Component<{ socket: Socket }> = (props) => {
   let typingTimeout: number;
 
   const handleTyping = () => {
-    console.log("Typing");
-
     clearTimeout(typingTimeout);
 
-    props.socket.emit(
-      "typing",
-      `${localStorage.getItem("username")} is typing...`
-    );
+    props.socket.emit("typing", {
+      username: `${localStorage.getItem("username")} is typing...`,
+      toId: chatState.user.socketID,
+    });
 
     //Set a new timeout to clear the typing message after a certain delay
     typingTimeout = setTimeout(() => {
-      props.socket.emit("typing", "");
+      props.socket.emit("typing", {
+        username: "",
+        toId: chatState.user.socketID,
+      });
     }, 1000);
-  };
-
-  const handleKeyDown = () => {
-    handleTyping();
   };
 
   onCleanup(() => {
@@ -66,7 +63,7 @@ const ChatFooter: Component<{ socket: Socket }> = (props) => {
       console.log("Effect from chatFooter");
       const typingResponseHandler = (data: any) => {
         console.log("Typing response from backend: ", data);
-        setTypingStatus(data);
+        setTypingStatus(data.username);
       };
 
       props.socket.on("typingResponse", typingResponseHandler);
@@ -106,7 +103,7 @@ const ChatFooter: Component<{ socket: Socket }> = (props) => {
           class={styles.chat_input}
           value={message()}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onKeyDown={handleTyping}
         />
         <button type="submit" class={styles.chat_button}>
           Send
