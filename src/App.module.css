@@ -39,7 +39,7 @@
   font-weight: 400;
 }
 
-.subcontainer button{
+.subcontainer A{
   margin-top: 1rem;
   padding: 5px 20px;
   font-size: 1.5rem;
@@ -49,9 +49,10 @@
   border: 0;
   border-radius: 5px;
   transition: 0.3s ease-in-out;
+  text-decoration: none;
 }
 
-.subcontainer button:hover{
+.subcontainer A:hover{
   background:#ce911b
 }
 

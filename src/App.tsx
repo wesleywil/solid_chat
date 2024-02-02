@@ -1,3 +1,4 @@
+import { A } from "@solidjs/router";
 import type { Component } from "solid-js";
 
 import styles from "./App.module.css";
@@ -11,7 +12,7 @@ const App: Component = () => {
         <img src={logo} alt="logo" class={styles.logo} />
         <h1>SOLID CHAT</h1>
         <h2>Chat with Confidence in the Solid Zone</h2>
-        <button>Try Now</button>
+        <A href="chat">Try Now</A>
         <div class={styles.tick}></div>
       </div>
     </div>
