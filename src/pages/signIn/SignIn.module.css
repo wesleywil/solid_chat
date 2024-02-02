@@ -26,7 +26,7 @@
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+   gap:10px;
     font-size: 1.5rem;
     border: 1px solid #f0eff0;
     border-radius: 10px;
@@ -53,4 +53,11 @@
 .form button:hover{
     color: #252430;
     background-color: #f0eff0; 
+}
+
+.form span{
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    color: red;
 }

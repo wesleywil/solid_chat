@@ -9,6 +9,7 @@ import styles from "./SignIn.module.css";
 const SignIn: Component<{ socket: Socket }> = (props) => {
   const navigate = useNavigate();
   const [username, setUsername] = createSignal("");
+  const [error, setError] = createSignal("");
   const [states, action] = useRedux(userStore, { setOnlineUsers });
 
   const handleSubmit = (e: Event) => {
@@ -20,11 +21,17 @@ const SignIn: Component<{ socket: Socket }> = (props) => {
     props.socket.emit("newUser", {
       username: username(),
     });
-
+    props.socket.on("newUserError", (data) => {
+      console.log("Error: ", data);
+      setError(data);
+    });
     props.socket.on("newUserResponse", (data) => {
       action.setOnlineUsers(data);
+      navigate("/chat");
     });
-    navigate("/chat");
+    props.socket.on("userDeleteResponse", (data) => {
+      action.setOnlineUsers(data);
+    });
   };
   return (
     <div class={styles.container}>
@@ -42,6 +49,7 @@ const SignIn: Component<{ socket: Socket }> = (props) => {
             placeholder="ex: micheal3250"
           />
           <button>Sign Up</button>
+          <span>{error()}</span>
         </form>
         <span>
           Generate a temporary username to connect and chat with other users
