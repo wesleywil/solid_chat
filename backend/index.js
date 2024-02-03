@@ -3,6 +3,16 @@ import http from "node:http";
 import cors from "cors";
 import { Server as SocketIOServer } from "socket.io";
 import { createUser, deleteUser, getAllUsers } from "./database/db.js";
+import { messageAll, privateMessage } from "./socket_functions/message.js";
+import { typing } from "./socket_functions/typing.js";
+import {
+  handleNewUser,
+  handleDeleteUser,
+  handleDisconnect,
+  asyncHandleDisconnect,
+  asyncHandleNewUser,
+  asyncHandleDeleteUser,
+} from "./socket_functions/handleUser.js";
 
 const app = express();
 const PORT = 5000;
@@ -24,106 +34,56 @@ socketIO.on("connection", (socket) => {
 
   // Send Messages
   socket.on("message", (data) => {
-    console.log("message from client => ", data);
-    socketIO.emit("messageResponse", data);
+    messageAll(socket, data);
   });
 
   socket.on("private_message", (data) => {
     console.log("private_message => ", data);
-    // Emit to the recipient
-    socket.to(data.toId).emit("messageResponse", {
-      text: data.text,
-      name: data.name,
-      id: data.id,
-      socketID: data.socketID,
-    });
-    // Emit to the sender
-    socket.emit("messageResponse", {
-      text: data.text,
-      name: data.name,
-      id: data.id,
-      socketID: data.socketID,
-    });
+    privateMessage(socket, data);
   });
   // Nofify when a user is typing
   socket.on("typing", (data) => {
-    socket.broadcast.to(data.toId).emit("typingResponse", data);
+    typing(socket, data);
   });
   // Listens when a new user joins the server
-  socket.on("newUser", (data) => {
-    createUser(data.username, socket.id, (err, userId) => {
-      if (err) {
-        if (
-          err.message ===
-          "SQLITE_CONSTRAINT: UNIQUE constraint failed: users.username"
-        ) {
-          console.log("username is already taken");
-          socket.emit("newUserError", "username is already taken");
-        } else {
-          console.error("Error creating user: ", err.message);
-          return;
-        }
-      } else {
-        users.push({
-          id: userId,
-          username: data.username,
-          socketID: socket.id,
-        });
-        socketIO.emit("newUserResponse", users);
-      }
-    });
+  socket.on("newUser", async (data) => {
+    try {
+      users = await asyncHandleNewUser(socket, data, createUser, getAllUsers);
+    } catch (error) {
+      console.error("Error handling creation of a new user: ", error.message);
+    }
   });
 
-  socket.on("deleteUser", () => {
-    deleteUser(socket.id, (err) => {
-      if (err) {
-        console.error("Error delete user: ", err.message);
-        return;
-      }
-      getAllUsers((err, rows) => {
-        if (err) {
-          console.error("Error fetching users: ", err.message);
-          return;
-        }
-        users = rows;
-        socket.emit("userDeleteResponse", users);
-      });
-    });
+  socket.on("deleteUser", async () => {
+    try {
+      users = await asyncHandleDeleteUser(socket, getAllUsers, deleteUser);
+    } catch (error) {
+      console.error("Error handling deleting a user: ", error.message);
+    }
   });
 
   // Disconnect User
-  socket.on("disconnect", () => {
+  socket.on("disconnect", async () => {
     console.log("🔥: A user disconnected");
-    deleteUser(socket.id, (err) => {
-      if (err) {
-        console.error("Error delete user: ", err.message);
-        return;
-      }
-      getAllUsers((err, rows) => {
-        if (err) {
-          console.error("Error fetching users: ", err.message);
-          return;
-        }
-        users = rows;
-        socket.emit("newUserResponse", users);
-      });
-    });
-    socket.disconnect();
+    try {
+      users = await asyncHandleDisconnect(socket, getAllUsers, deleteUser);
+      console.log("Updated user list:", users);
+    } catch (error) {
+      console.error("Error handling disconnect: ", error.message);
+    }
   });
 });
 
-app.get("/api/users", (req, res) => {
-  getAllUsers((err, rows) => {
-    if (err) {
-      res.json({
-        error: err.message,
-      });
-    }
-    const users = rows;
+app.get("/api/users", async (req, res) => {
+  try {
+    const users = await getAllUsers();
+    res.json({ users: users });
+  } catch (error) {
+    console.error("Error trying to fetch users: ", error.message);
     res.json({
-      users: users,
+      error: "Error while trying to fetch users",
     });
-  });
+  }
 });
 
 server.listen(PORT, () => {
