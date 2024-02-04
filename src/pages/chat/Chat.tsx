@@ -8,7 +8,7 @@ import logo from "../../assets/logo.webp";
 
 // Components
 import ChatMessage from "../../components/chat_message/ChatMessage";
-import ChatFriendList from "../../components/chat_friend_list/ChatFriendList";
+import OnlineUserList from "../../components/chat_friend_list/OnlineUserList";
 import ChatFooter from "../../components/chat_footer/ChatFooter";
 
 const Chat: Component<{ socket: Socket }> = (props) => {
@@ -27,7 +27,7 @@ const Chat: Component<{ socket: Socket }> = (props) => {
   return (
     <div class={styles.container}>
       {/* Friend List */}
-      <ChatFriendList socket={props.socket} />
+      <OnlineUserList socket={props.socket} />
       {/* Content */}
       <div class={styles.sub_container}>
         <img src={logo} alt="logo" class={styles.sub_container_image} />

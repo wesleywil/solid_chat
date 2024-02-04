@@ -4,12 +4,12 @@ import useRedux from "../../redux/useRedux";
 import { setHideFriendList, utilStore } from "../../redux/utils/utils";
 import { filterOnlineUsers, userStore } from "../../redux/users/users";
 
-import styles from "./ChatFriendList.module.css";
+import styles from "./OnlineUserList.module.css";
 
 // Components
-import ChatFriendListItem from "../chat_friend_list_item/ChatFriendListItem";
+import OnlineUserListItem from "../chat_friend_list_item/OnlineUserListItem";
 
-const ChatFriendList: Component<{ socket: Socket }> = (props) => {
+const OnlineUserList: Component<{ socket: Socket }> = (props) => {
   const [state, actions] = useRedux(utilStore, { setHideFriendList });
   const [userState, userActions] = useRedux(userStore, { filterOnlineUsers });
   const [containerClass, setContainerClass] = createSignal(styles.container);
@@ -29,7 +29,7 @@ const ChatFriendList: Component<{ socket: Socket }> = (props) => {
   };
   return (
     <div class={containerClass()}>
-      <h1 class={styles.title}>Friend List</h1>
+      <h1 class={styles.title}>Online User List</h1>
       <input
         type="text"
         class={styles.search_input}
@@ -38,11 +38,11 @@ const ChatFriendList: Component<{ socket: Socket }> = (props) => {
       />
       <div class={styles.friend_list}>
         <For each={userState.onlineUsers}>
-          {(item) => <ChatFriendListItem user={item} />}
+          {(item) => <OnlineUserListItem user={item} />}
         </For>
       </div>
     </div>
   );
 };
 
-export default ChatFriendList;
+export default OnlineUserList;

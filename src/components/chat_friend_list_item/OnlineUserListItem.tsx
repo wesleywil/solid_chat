@@ -3,9 +3,9 @@ import { chatStore, setUser, resetUser } from "../../redux/chat/chat";
 import useRedux from "../../redux/useRedux";
 import { User } from "../../utils/interfaces";
 
-import styles from "./ChatFriendListItem.module.css";
+import styles from "./OnlineUserListItem.module.css";
 
-const ChatFriendListItem: Component<{ user: User }> = (props) => {
+const OnlineUserListItem: Component<{ user: User }> = (props) => {
   const [state, actions] = useRedux(chatStore, { setUser, resetUser });
 
   const setUserToChat = () => {
@@ -46,4 +46,4 @@ const ChatFriendListItem: Component<{ user: User }> = (props) => {
   );
 };
 
-export default ChatFriendListItem;
+export default OnlineUserListItem;
