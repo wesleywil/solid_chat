@@ -1,27 +1,3 @@
-export function handleNewUser(socket, data, createUserCallback) {
-  createUserCallback(data.username, socket.id, (err, userId) => {
-    if (err) {
-      if (
-        err.message ===
-        "SQLITE_CONSTRAINT: UNIQUE constraint failed: users.username"
-      ) {
-        console.log("username is already taken");
-        socket.emit("newUserError", "username is already taken");
-      } else {
-        console.error("Error creating user: ", err.message);
-        return;
-      }
-    } else {
-      users.push({
-        id: userId,
-        username: data.username,
-        socketID: socket.id,
-      });
-      socket.emit("newUserResponse", users);
-    }
-  });
-}
-
 export async function asyncHandleNewUser(
   socket,
   data,
@@ -36,29 +12,15 @@ export async function asyncHandleNewUser(
     return users;
   } catch (err) {
     console.error("Error handling new user: ", err.message);
+    if(err.message.includes("SQLITE_CONSTRAINT: UNIQUE constraint failed: users.username")){
+      const error = new Error("Username already exists!");
+      socket.emit("newUserError", error.message);
     throw err;
-  }
-}
-
-export function handleDeleteUser(
-  socket,
-  getAllUsersCallback,
-  deleteUserCallback
-) {
-  deleteUserCallback(socket.id, (err) => {
-    if (err) {
-      console.error("Error delete user: ", err.message);
-      return;
+    }else{
+      socket.emit("newUserError", err.message);
     }
-    getAllUsersCallback((err, rows) => {
-      if (err) {
-        console.error("Error fetching users: ", err.message);
-        return;
-      }
-      users = rows;
-      socket.emit("userDeleteResponse", users);
-    });
-  });
+    
+  }
 }
 
 export async function asyncHandleDeleteUser(
@@ -75,28 +37,6 @@ export async function asyncHandleDeleteUser(
     console.error("Error handling delete of a user: ", err.message);
     throw err;
   }
-}
-
-export function handleDisconnect(
-  socket,
-  getAllUsersCallback,
-  deleteUserCallback
-) {
-  deleteUserCallback(socket.id, (err) => {
-    if (err) {
-      console.error("Error delete user: ", err.message);
-      return;
-    }
-    getAllUsersCallback((err, rows) => {
-      if (err) {
-        console.error("Error fetching users: ", err.message);
-        return;
-      }
-      users = rows;
-      socket.emit("newUserResponse", users);
-    });
-  });
-  socket.disconnect();
 }
 
 export async function asyncHandleDisconnect(

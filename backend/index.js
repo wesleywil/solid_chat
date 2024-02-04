@@ -6,9 +6,6 @@ import { createUser, deleteUser, getAllUsers } from "./database/db.js";
 import { messageAll, privateMessage } from "./socket_functions/message.js";
 import { typing } from "./socket_functions/typing.js";
 import {
-  handleNewUser,
-  handleDeleteUser,
-  handleDisconnect,
   asyncHandleDisconnect,
   asyncHandleNewUser,
   asyncHandleDeleteUser,
@@ -36,9 +33,8 @@ socketIO.on("connection", (socket) => {
   socket.on("message", (data) => {
     messageAll(socket, data);
   });
-
+  // Send a private message using the socket ID
   socket.on("private_message", (data) => {
-    console.log("private_message => ", data);
     privateMessage(socket, data);
   });
   // Nofify when a user is typing
@@ -53,7 +49,7 @@ socketIO.on("connection", (socket) => {
       console.error("Error handling creation of a new user: ", error.message);
     }
   });
-
+  // Delete the user from the list
   socket.on("deleteUser", async () => {
     try {
       users = await asyncHandleDeleteUser(socket, getAllUsers, deleteUser);
@@ -73,7 +69,7 @@ socketIO.on("connection", (socket) => {
     }
   });
 });
-
+// Fetch all users from the database
 app.get("/api/users", async (req, res) => {
   try {
     const users = await getAllUsers();
