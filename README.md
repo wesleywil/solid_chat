@@ -1,34 +1,46 @@
-## Usage
+# Solid Chat
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+A web app that allows users to chat with each other using private messages
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+## Tech Stack
+
+**FrontEnd:** Typescript, SolidJS, Socket.io, Redux-Toolkit and CSS
+
+**Backend:** Javascript, SQL, ExpressJS, Socket.io, SQLite3
+
+## Screenshots
+
+### Demo
+
+![Homepage](https://i.imgur.com/abwmlRk.png)
+
+![SignIn](https://i.imgur.com/PUu8gXI.png)
+
+![Chat](https://i.imgur.com/E0OezjF.png)
+
+## Run Locally
+
+### Clone the project
 
 ```bash
-$ npm install # or pnpm install or yarn install
+  git clone https://github.com/wesleywil/solid_chat
 ```
 
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
+#### Frontend
 
-## Available Scripts
+| Command         | Action                                      |
+| :-------------- | :------------------------------------------ |
+| `npm install`   | Installs dependencies                       |
+| `npm run dev`   | Starts local dev server at `localhost:3000` |
+| `npm run build` | Build your production site to `./dist/`     |
 
-In the project directory, you can run:
+#### Backend
 
-### `npm run dev` or `npm start`
+| Command       | Action                                      |
+| :------------ | :------------------------------------------ |
+| `npm install` | Installs dependencies                       |
+| `npm start`   | Starts local dev server at `localhost:5000` |
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Authors
 
-The page will reload if you make edits.<br>
-
-### `npm run build`
-
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-## Deployment
-
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+- [Wesley Wilson](https://github.com/wesleywil)
