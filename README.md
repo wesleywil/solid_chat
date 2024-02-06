@@ -18,6 +18,8 @@ A web app that allows users to chat with each other using private messages
 
 ![Chat](https://i.imgur.com/E0OezjF.png)
 
+![DEMO](https://i.imgur.com/1QKVocD.gif)
+
 ## Run Locally
 
 ### Clone the project
